@@ -32,6 +32,12 @@ namespace S3_HW20._10._21.Numbers
                 get { return square; }
                 set { square = value; }
             }
+            public Numbers()
+            {
+                factorial = new List<int>();
+                fibonachi = new List<int>();
+                square = new List<int>();
+            }
             public void UpdateList(object state)
             {
                 string name = (string)state;
@@ -40,21 +46,21 @@ namespace S3_HW20._10._21.Numbers
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        factorial.Add(Factorial(i));
+                        factorial.Add(GetFactorial(i));
                     }
                 }
                 else if (name == "fibonachi")
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        fibonachi.Add(Fibonachi(i));
+                        fibonachi.Add(GetFibonachi(i));
                     }
                 }
                 else if (name == "square")
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        square.Add(Square(i));
+                        square.Add(GetSquare(i));
                     }
                 }
                 else
@@ -62,6 +68,7 @@ namespace S3_HW20._10._21.Numbers
                     return;
                 }
             }
+           
         }
 
         static void Main(string[] args)
@@ -70,20 +77,23 @@ namespace S3_HW20._10._21.Numbers
             
             Thread factorialThread = new Thread(new ParameterizedThreadStart(numbers.UpdateList));
             factorialThread.Start("factorial");
+            
             Thread fibonachiThread = new Thread(new ParameterizedThreadStart(numbers.UpdateList));
-            factorialThread.Start("fibonachi");
+            fibonachiThread.Start("fibonachi");
+            
             Thread squareThread = new Thread(new ParameterizedThreadStart(numbers.UpdateList));
-            factorialThread.Start("square");
-
-            Console.WriteLine(" i\tFactorial\tFibonachi\tSquare");
+            squareThread.Start("square");
+            
+            Console.WriteLine(" i\tSquare\tFibonachi\tFactorial");
             Console.WriteLine("------------------------------------------------");
             for (int i = 0; i < 20; i++)
             {
-                Console.WriteLine(i + "\t" + numbers.Factorial[i] + "\t" + numbers.Fibonachi[i] + "\t" + numbers.Square[i] +"\n");
+                Console.WriteLine(i + "\t" + numbers.Square[i] + "\t" + numbers.Fibonachi[i] + "\t\t" + numbers.Factorial[i] +"\n");
             }
             Console.WriteLine("------------------------------------------------");
         }
-        public static int Factorial(int n)
+
+        public static int GetFactorial(int n)
         {
             if (n == 0)
             {
@@ -91,10 +101,11 @@ namespace S3_HW20._10._21.Numbers
             }
             else
             {
-                return n * Factorial(n - 1);
+                return n * GetFactorial(n - 1);
             }
         }
-        public static int Fibonachi(int n)
+
+        public static int GetFibonachi(int n)
         {
             if (n == 0 || n == 1)
             {
@@ -102,13 +113,14 @@ namespace S3_HW20._10._21.Numbers
             }
             else
             {
-                return Fibonachi(n - 1) + Fibonachi(n - 2);
+                return GetFibonachi(n - 1) + GetFibonachi(n - 2);
             }
         }
-        public static int Square(int n)
+
+        public static int GetSquare(int n)
         {
             return n * n;
         }
-       
+
     }
 }
